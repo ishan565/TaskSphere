@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { KanbanColumn } from "./KanbanColumn";
 import { TaskDialog } from "./TaskDialog";
 import { Task } from "@/types";
+import { DndContext, DragEndEvent, DragOverEvent } from "@dnd-kit/core";
 
 const initialTasks: Task[] = [
   {
@@ -50,6 +51,18 @@ export function KanbanBoard() {
     ));
   };
 
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over) return;
+
+    const taskId = active.id as string;
+    const newStatus = over.id as Task["status"];
+
+    if (newStatus && taskId) {
+      handleMoveTask(taskId, newStatus);
+    }
+  };
+
   return (
     <div className="p-4 h-full">
       <div className="mb-4 flex justify-between items-center">
@@ -59,26 +72,31 @@ export function KanbanBoard() {
           Add Task
         </Button>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-[calc(100vh-12rem)]">
-        <KanbanColumn
-          title="To Do"
-          tasks={tasks.filter(t => t.status === "todo")}
-          status="todo"
-          onMoveTask={handleMoveTask}
-        />
-        <KanbanColumn
-          title="In Progress"
-          tasks={tasks.filter(t => t.status === "in-progress")}
-          status="in-progress"
-          onMoveTask={handleMoveTask}
-        />
-        <KanbanColumn
-          title="Done"
-          tasks={tasks.filter(t => t.status === "done")}
-          status="done"
-          onMoveTask={handleMoveTask}
-        />
-      </div>
+      <DndContext onDragEnd={handleDragEnd}>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 h-[calc(100vh-12rem)]">
+          <KanbanColumn
+            id="todo"
+            title="To Do"
+            tasks={tasks.filter(t => t.status === "todo")}
+            status="todo"
+            onMoveTask={handleMoveTask}
+          />
+          <KanbanColumn
+            id="in-progress"
+            title="In Progress"
+            tasks={tasks.filter(t => t.status === "in-progress")}
+            status="in-progress"
+            onMoveTask={handleMoveTask}
+          />
+          <KanbanColumn
+            id="done"
+            title="Done"
+            tasks={tasks.filter(t => t.status === "done")}
+            status="done"
+            onMoveTask={handleMoveTask}
+          />
+        </div>
+      </DndContext>
       <TaskDialog
         open={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
