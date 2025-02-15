@@ -7,17 +7,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 export function DashboardHeader() {
-  const { toast } = useToast();
-
-  const handleLogout = () => {
-    toast({
-      title: "Logout functionality coming soon",
-      description: "We need to connect to Supabase first!"
-    });
-  };
+  const { logout, user } = useAuth();
 
   return (
     <header className="border-b bg-white">
@@ -35,7 +28,10 @@ export function DashboardHeader() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={handleLogout}>
+              <DropdownMenuItem className="text-sm text-muted-foreground">
+                {user?.email}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={logout}>
                 <LogOut className="mr-2 h-4 w-4" />
                 Logout
               </DropdownMenuItem>
