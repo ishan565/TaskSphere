@@ -19,9 +19,9 @@ export function KanbanColumn({ id, title, tasks, status, onMoveTask }: KanbanCol
   return (
     <div
       ref={setNodeRef}
-      className="bg-gray-50 rounded-lg p-4"
+      className="bg-white/50 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-gray-100"
     >
-      <h3 className="font-medium mb-4 text-sm text-gray-600">{title}</h3>
+      <h3 className="font-semibold mb-4 text-sm text-gray-700">{title}</h3>
       <div className="space-y-4">
         {tasks.map((task) => (
           <TaskCard key={task.id} task={task} onMove={onMoveTask} />

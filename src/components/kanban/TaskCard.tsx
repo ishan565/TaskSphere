@@ -30,15 +30,16 @@ export function TaskCard({ task, onMove }: TaskCardProps) {
       style={style}
       {...listeners}
       {...attributes}
-      className={`task-card group cursor-grab active:cursor-grabbing ${
-        isDragging ? "opacity-50" : ""
-      }`}
+      className={`bg-white rounded-lg p-4 shadow-sm border border-gray-100 
+        transition-all duration-200 hover:shadow-md group cursor-grab 
+        active:cursor-grabbing ${isDragging ? "opacity-50" : ""}
+        hover:border-blue-100`}
     >
       <div className="flex justify-between items-start mb-2">
-        <h4 className="font-medium">{task.title}</h4>
+        <h4 className="font-medium text-gray-800">{task.title}</h4>
         <DropdownMenu>
-          <DropdownMenuTrigger className="opacity-0 group-hover:opacity-100">
-            <MoreVertical className="h-4 w-4" />
+          <DropdownMenuTrigger className="opacity-0 group-hover:opacity-100 transition-opacity">
+            <MoreVertical className="h-4 w-4 text-gray-500 hover:text-gray-700" />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             {task.status !== "todo" && (
